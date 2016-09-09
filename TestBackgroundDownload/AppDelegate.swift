@@ -14,8 +14,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var delegate = DownloadSessionDelegate.shareInstance
 
-
-    private func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) -> Bool {
         // Override point for customization after application launch.
         let setting = UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
         UIApplication.shared.registerUserNotificationSettings(setting)
@@ -28,19 +27,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //
         if UIApplication.shared.isRegisteredForRemoteNotifications {
             let localNotificaiton = UILocalNotification()
-            localNotificaiton.alertTitle = "开始下载啦"
-            localNotificaiton.alertAction = "START_DOWNLOADING"
-            localNotificaiton.alertBody = "注意注意........."
+            localNotificaiton.alertTitle = "Alert"
+            localNotificaiton.alertAction = "Finished_DOWNLOADING"
+            localNotificaiton.alertBody = "The download task:\(identifier) has been done........."
             localNotificaiton.soundName = UILocalNotificationDefaultSoundName
             UIApplication.shared.presentLocalNotificationNow(localNotificaiton)
         }
         
-        
+
         let config = URLSessionConfiguration.background(withIdentifier: identifier)
         let session = URLSession(configuration: config, delegate: delegate, delegateQueue: OperationQueue.main)
         print("************--------rejoining session: \(session)------------**************")
         let completionBlock: CompletionHandlerBlock = completionHandler
         self.delegate.addCompletionHandler(handler: completionBlock, identifier: identifier)
+    }
+    
+    func application(_ application: UIApplication, didRegister notificationSettings: UIUserNotificationSettings) {
+        print("notificationSettings: \(notificationSettings)")
+    }
+    
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        print("deviceToken: \(deviceToken)")
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
