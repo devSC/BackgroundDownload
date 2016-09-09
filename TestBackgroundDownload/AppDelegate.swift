@@ -74,18 +74,3 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
 }
-
-extension AppDelegate: URLSessionDownloadDelegate {
-    
-    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didWriteData bytesWritten: Int64, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64) {
-        print("progress: \(Float(totalBytesWritten) / Float(totalBytesExpectedToWrite))")
-    }
-    
-    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
-        print("location: \(location)")
-    }
-    
-    func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?) {
-        print("download error: \(error)")
-    }
-}
